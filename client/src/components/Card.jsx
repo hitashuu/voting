@@ -1,7 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
+import api from '../posts';
+import { useNavigate } from 'react-router-dom';
 
-function Card({ photo, candidateName, partyName, onVote }) {
+function Card({ name,desc,candidatename,candidateparty,id,election_id,image}) {
+
+
+    const[msg,setmsg]=useState("");
+    const navigate=useNavigate();
+    
+
+
+    const onVote=async()=>{
+        try{
+            const res=await api.get("voteadded",{
+                params:{id,election_id},
+                withCredentials:true
+            })
+
+            setmsg(res.data.msg);
+            
+            navigate("/availablePolls")
+
+
+        }
+
+       
+
+
+        
+      catch (err) {
+     
+      
+  if (err.response && err.response.data && err.response.data.result) {
+       setmsg(err.response.data.msg);
+     
+  } else {
+    
+    setmsg("Something went wrong");
+  }
+    }
+}
     return (
+        <>
+        {msg && <h1 className='text-center text-green-500'>{msg}</h1>}
+
+        
         <div style={{
             border: '1px solid gray',
             borderRadius: '8px',
@@ -12,31 +55,31 @@ function Card({ photo, candidateName, partyName, onVote }) {
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
         }}>
             <img 
-                src="https://plus.unsplash.com/premium_photo-1689530775582-83b8abdb5020?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cmFuZG9tJTIwcGVyc29ufGVufDB8fDB8fHww" 
-                alt={`${candidateName}'s photo`} 
+                  src={`http://localhost:8000${image}`}
                 style={{
                     width: '100%',
                     height: 'auto',
                     borderRadius: '8px'
                 }} 
             />
-            <h2 style={{ margin: '16px 0 8px' }}>Raninder Singh</h2>
-            <h4 style={{ margin: '0 0 16px', color: 'gray' }}>Ranno</h4>
-            <hr style={{ margin: '16px 0', borderColor: 'gray' }} />
+           
+           <h4 className="m-0 mb-4 text-black-800">Election name: <span className='text-black-300'>{name}</span></h4>
+          <h4 className="m-0 mb-4 text-black-800">Election desc: <span className='text-black-300'>{desc}</span></h4>
+            <h4 className="m-0 mb-4 text-black-800">Candidate name: <span className='text-black-300'>{candidatename}</span></h4>
+           <h4 className="m-0 mb-4 text-black-800">Candidate party: <span className='text-black-300'>{candidateparty}</span></h4>
+            
             <button 
                 onClick={onVote} 
-                style={{
-                    backgroundColor: 'black',
-                    color: 'white',
-                    border: 'none',
-                    padding: '8px 16px',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
-                }}
+                
+
+                className="text-white border-none px-4 py-2 rounded cursor-pointer bg-[#3AAFA9] hover-bg-black"
+
             >
                 Vote Now
             </button>
+            
         </div>
+        </>
     );
 }
 

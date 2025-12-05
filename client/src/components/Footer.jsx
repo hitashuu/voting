@@ -6,10 +6,11 @@ import instagramLogo from '../assets/instagram.png'
 function Footer() {
 
 return (
-    <footer className="text-center p-4 bg-gray-100 mt-8">
+     <footer className=" text-black p-2  text-center">
+        
         <div className="container mx-auto">
             <hr className="border-t border-gray-300 mb-4" />
-            <p>&copy; {new Date().getFullYear()} Voting App. All rights reserved.</p>
+            <p> Voting App. All rights reserved.</p>
             <div className="flex justify-center space-x-4 mt-4">
                 <a href="https://github.com" target="_blank" rel="noopener noreferrer">
                     <img src={githubLogo} alt="GitHub" className="h-6 w-6" />
